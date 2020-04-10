@@ -1,5 +1,8 @@
 <?
 require 'init.php';
+
+displayFlash();
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }

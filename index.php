@@ -1,8 +1,9 @@
-<link rel="stylesheet" href="resources/main.css">
 <?php
 require 'init.php';
 
-$sql = 'SELECT * FROM PRODUCTS';
+displayFlash();
+
+$sql = 'SELECT * FROM PRODUCTS WHERE AMOUNT>0';
 $stmt = $pdo->query($sql);
 ?>
 
@@ -17,7 +18,10 @@ $stmt = $pdo->query($sql);
         </div>
         <div>
             <?= $row->AMOUNT ?>
+            <?php if ($row->AMOUNT>0) {
+            ?>
         </div><form action="dodaj_do_koszyka.php" method="POST"><input type="submit" value="DODAJ DO KOSZYKA">
                                                     <input name="itemID" type="hidden" value="<?php echo $row->ID; ?>"> </form>
+            <?php } ?>
     </article>
-<?php endwhile; ?>
+<?php endwhile; 

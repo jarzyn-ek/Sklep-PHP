@@ -14,4 +14,19 @@ article div {
       -ms-flex: 1;
           flex: 1;
 }
+
+footer form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.container {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
 /*# sourceMappingURL=main.css.map */
