@@ -1,0 +1,17 @@
+body {
+
+}
+
+div:has(a) {
+    padding: 100px;
+}
+
+$color-main: #f0f0f0;
+
+article {
+    display: flex;
+    padding: 5px;
+    div {
+        flex: 1;
+    }
+}
