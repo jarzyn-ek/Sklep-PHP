@@ -7,10 +7,16 @@ if (isset($_POST)) {
 
     $lock = 'LOCK TABLES PRODUCTS WRITE';
     $lockQuery = $pdo->query($lock);
-    $sql = 'SELECT * FROM PRODUCTS WHERE ID in (' . implodeArrayKeys($_SESSION['cart']) . ')';
-    $stmt = $pdo->query($sql);
 
-    $products = $stmt->fetchAll();
+    $marks = [];
+    for($i = 0; $i < count($_SESSION['cart']); $i++) {
+        $marks[] = '?';
+    }
+
+    $sql = $pdo->prepare(sprintf('SELECT * FROM PRODUCTS WHERE ID in (%s)', implode(', ', $marks)));
+    $sql->execute(array_keys($_SESSION['cart']));
+
+    $products = $sql->fetchAll();
 
     foreach($products as $product) {
         if ($_SESSION['cart'][$product->ID] > $product->AMOUNT) {
@@ -23,9 +29,13 @@ if (isset($_POST)) {
     }
 
     foreach($products as $product) {
-        $update = 'UPDATE PRODUCTS SET AMOUNT=AMOUNT-' . $_SESSION['cart'][$product->ID] .  ' WHERE ID=' . $product->ID;
-        $pdo->query($update);
+        $update = $pdo->prepare('UPDATE PRODUCTS SET AMOUNT=AMOUNT-? WHERE ID=?');
+        $update->bindParam(1,$_SESSION['cart'][$product->ID]);
+        $update->bindParam(2,$product->ID);
+        $update->execute();
+        // var_dump($update);
     }
+    // die;
 
     $unlock = 'UNLOCK TABLES';
     $unlockQuery = $pdo->query($unlock);
