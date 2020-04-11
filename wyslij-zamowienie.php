@@ -3,7 +3,7 @@ require 'init.php';
 
 displayFlash();
 
-if (isset($_POST)) {
+if (isset($_POST) && !empty($_POST)) {
 
     $lock = 'LOCK TABLES PRODUCTS WRITE';
     $lockQuery = $pdo->query($lock);

@@ -1,0 +1,4 @@
+[Info  - 16:19:41] Angular language server process ID: 12052
+[Info  - 16:19:41] Using typescript v3.8.3 from /home/olunia/.vscode/extensions/angular.ng-template-0.901.0/node_modules/typescript/lib/tsserverlibrary.js
+[Info  - 16:19:41] Using @angular/language-service v9.1.0 from /home/olunia/.vscode/extensions/angular.ng-template-0.901.0/server/node_modules/@angular/language-service/bundles/language-service.umd.js
+[Info  - 16:19:41] Log file: /opt/lampp/htdocs/PAI6/~/.vscode-root/logs/20200411T154439/exthost1/Angular.ng-template/nglangsvc.log

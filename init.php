@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="resources/main.css">
 <?php
 session_start();
 
@@ -15,6 +14,13 @@ $pdo = new PDO($dsn, $user);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
+
+function getHeader($str="SKLEP") {
+    ob_start();
+    $title = $str;
+    require 'header.php';
+    ob_end_flush();
+}
 
 function implodeArrayKeys($array) {
     return implode(", ",array_keys($array));
