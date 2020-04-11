@@ -33,9 +33,7 @@ if (isset($_POST)) {
         $update->bindParam(1, $_SESSION['cart'][$product->ID]);
         $update->bindParam(2, $product->ID);
         $update->execute();
-        // var_dump($update);
     }
-    // die;
 
     $unlock = 'UNLOCK TABLES';
     $unlockQuery = $pdo->query($unlock);
