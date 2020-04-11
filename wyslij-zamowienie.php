@@ -8,15 +8,15 @@ if (isset($_POST)) {
     $lock = 'LOCK TABLES PRODUCTS WRITE';
     $lockQuery = $pdo->query($lock);
 
-    $marks = [];
-    for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-        $marks[] = '?';
-    }
 
-    $sql = $pdo->prepare(sprintf('SELECT * FROM PRODUCTS WHERE ID in (%s)', implode(', ', $marks)));
+    $sql = $pdo->prepare(sprintf('SELECT * FROM PRODUCTS WHERE ID in (%s)', createImplodedMarksArray(count($_SESSION['cart']))));
     $sql->execute(array_keys($_SESSION['cart']));
 
     $products = $sql->fetchAll();
+
+    $updateIDamount = [];
+    $updateID = [];
+
 
     foreach ($products as $product) {
         if ($_SESSION['cart'][$product->ID] > $product->AMOUNT) {
@@ -26,14 +26,15 @@ if (isset($_POST)) {
             header('Location: oproznij-koszyk.php');
             die;
         }
+
+        array_push($updateIDamount,$product->ID,$product->AMOUNT-$_SESSION['cart'][$product->ID]);
+        array_push($updateID,$product->ID);
     }
 
-    foreach ($products as $product) {
-        $update = $pdo->prepare('UPDATE PRODUCTS SET AMOUNT=AMOUNT-? WHERE ID=?');
-        $update->bindParam(1, $_SESSION['cart'][$product->ID]);
-        $update->bindParam(2, $product->ID);
-        $update->execute();
-    }
+
+    $update = $pdo->prepare(createUpdateQuery(count($_SESSION['cart'])));
+    $update->execute(array_merge($updateIDamount,$updateID));
+
 
     $unlock = 'UNLOCK TABLES';
     $unlockQuery = $pdo->query($unlock);

@@ -26,3 +26,23 @@ function displayFlash() {
         unset($_SESSION['flash']);
     }
 }
+
+function createImplodedMarksArray($number) {
+    $marks = [];
+    for ($i = 0; $i < $number; $i++) {
+        $marks[] = '?';
+    }
+    return implode(', ',$marks);
+}
+
+function createUpdateQuery($number) {
+    $updateCase = "UPDATE PRODUCTS SET AMOUNT = case ID ";
+    $updateWhere = "ELSE AMOUNT END WHERE ID IN ( ";
+    $updateEnd = ")";
+
+    for ($i = 0; $i < $number; $i++) {
+        $updateCase = $updateCase . " WHEN ? THEN ? ";
+    }
+
+    return $updateCase . $updateWhere . createImplodedMarksArray($number) . $updateEnd;
+}
