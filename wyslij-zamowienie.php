@@ -9,7 +9,7 @@ if (isset($_POST)) {
     $lockQuery = $pdo->query($lock);
 
     $marks = [];
-    for($i = 0; $i < count($_SESSION['cart']); $i++) {
+    for ($i = 0; $i < count($_SESSION['cart']); $i++) {
         $marks[] = '?';
     }
 
@@ -18,20 +18,20 @@ if (isset($_POST)) {
 
     $products = $sql->fetchAll();
 
-    foreach($products as $product) {
+    foreach ($products as $product) {
         if ($_SESSION['cart'][$product->ID] > $product->AMOUNT) {
             $_SESSION['flash'] = "Jeden albo więcej z produktów został wyprzedany!";
             $unlock = 'UNLOCK TABLES';
             $unlockQuery = $pdo->query($unlock);
             header('Location: oproznij-koszyk.php');
             die;
-        } 
+        }
     }
 
-    foreach($products as $product) {
+    foreach ($products as $product) {
         $update = $pdo->prepare('UPDATE PRODUCTS SET AMOUNT=AMOUNT-? WHERE ID=?');
-        $update->bindParam(1,$_SESSION['cart'][$product->ID]);
-        $update->bindParam(2,$product->ID);
+        $update->bindParam(1, $_SESSION['cart'][$product->ID]);
+        $update->bindParam(2, $product->ID);
         $update->execute();
         // var_dump($update);
     }
